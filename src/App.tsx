@@ -10,6 +10,8 @@ import PasswordResetConfirmation from "./pages/PasswordResetConfirmation.tsx";
 import AdminLayout from "./components/AdminLayout";
 import NotFound from "./pages/NotFound";
 import ChauffeurList from "./pages/chauffeur/ChauffeurList";
+import ProfileActivity from "./pages/chauffeur/ProfileActivity.tsx";
+import Dashboard from "./pages/chauffeur/Dashboard";
 import AddChauffeurForm from "./pages/chauffeur/AddChauffeurForm/AddChauffeurForm";
 import FeuillesDeRoute from "./pages/chauffeur/FeuillesDeRoute";
 import Planning from "./pages/chauffeur/Planning";
@@ -57,9 +59,10 @@ const App = () => {
               element={<PasswordResetConfirmation />}
             />
             <Route path="/admin" element={<AdminLayout />}>
-              <Route path="dashboard" element={<div>Dashboard Content</div>} />
+              <Route path="dashboard" element={<Dashboard />} />
               <Route path="chauffeurs" element={<ChauffeurList />} />
               <Route path="chauffeurs/add" element={<AddChauffeurForm />} />
+              <Route path="profile-activity" element={<ProfileActivity />} />
               <Route path="vehicles" element={<div>Vehicles Management</div>} />
               <Route path="planning" element={<Planning />} />
               <Route path="reports" element={<div>Reports Generator</div>} />
