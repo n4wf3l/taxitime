@@ -117,7 +117,7 @@ const StepIndicator: React.FC<{
   onStepClick: (step: number) => void;
 }> = ({ currentStep, totalSteps, onStepClick }) => {
   return (
-    <div className="flex justify-center space-x-4 mb-4 bg-gray-900 p-2 rounded-lg">
+    <div className="flex justify-center space-x-4 mb-4 p-2 rounded-lg">
       {Array.from({ length: totalSteps }, (_, index) => (
         <div
           key={index}
@@ -125,7 +125,7 @@ const StepIndicator: React.FC<{
           className={`w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-colors duration-200 border-2 ${
             currentStep === index
               ? "bg-yellow-600 border-white"
-              : "bg-gray-900 border-gray-600"
+              : " border-gray-600"
           }`}
         >
           {index + 1}

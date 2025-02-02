@@ -104,8 +104,14 @@ const FeuillesDeRoute = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-300">Date: {feuille.date}</p>
-              <p className="text-gray-300">Plaque: {feuille.plate}</p>
+              <p className="text-gray-300">
+                <Clock className="text-yellow-400 inline-block mr-1" />
+                Date: {feuille.date}
+              </p>
+              <p className="text-gray-300 mt-5">
+                <FileText className="text-yellow-400 inline-block mr-1" />
+                Plaque: {feuille.plate}
+              </p>
             </CardContent>
           </Card>
         ))}

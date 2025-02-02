@@ -22,6 +22,7 @@ const chauffeursEnRoute = [
     plate: "1-ABC-123",
     startTime: "08:30",
     image: "/driverimg.jpg",
+    phone: "+12345678901", // Numéro de téléphone
   },
   {
     id: 2,
@@ -29,6 +30,7 @@ const chauffeursEnRoute = [
     plate: "2-XYZ-456",
     startTime: "09:15",
     image: "/driverimg.jpg",
+    phone: "+12345678902",
   },
   {
     id: 3,
@@ -36,6 +38,7 @@ const chauffeursEnRoute = [
     plate: "3-JKL-789",
     startTime: "10:00",
     image: "/driverimg.jpg",
+    phone: "+12345678903",
   },
   {
     id: 4,
@@ -43,6 +46,7 @@ const chauffeursEnRoute = [
     plate: "4-MNO-654",
     startTime: "07:45",
     image: "/driverimg.jpg",
+    phone: "+12345678904",
   },
   {
     id: 5,
@@ -50,13 +54,15 @@ const chauffeursEnRoute = [
     plate: "5-QWE-987",
     startTime: "06:30",
     image: "/driverimg.jpg",
+    phone: "+12345678905",
   },
   {
     id: 6,
     name: "Julie D.",
-    plate: "6-RTY-321",
+    plate: "6 -RTY-321",
     startTime: "11:10",
     image: "/driverimg.jpg",
+    phone: "+12345678906",
   },
   {
     id: 7,
@@ -64,6 +70,7 @@ const chauffeursEnRoute = [
     plate: "7-UOP-753",
     startTime: "12:45",
     image: "/driverimg.jpg",
+    phone: "+12345678907",
   },
   {
     id: 8,
@@ -71,6 +78,7 @@ const chauffeursEnRoute = [
     plate: "8-ASD-147",
     startTime: "13:20",
     image: "/driverimg.jpg",
+    phone: "+12345678908",
   },
   {
     id: 9,
@@ -78,6 +86,7 @@ const chauffeursEnRoute = [
     plate: "9-FGH-258",
     startTime: "14:00",
     image: "/driverimg.jpg",
+    phone: "+12345678909",
   },
   {
     id: 10,
@@ -85,19 +94,19 @@ const chauffeursEnRoute = [
     plate: "10-LOP-369",
     startTime: "15:30",
     image: "/driverimg.jpg",
+    phone: "+12345678910",
   },
 ];
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [secondaryColor, setSecondaryColor] = useState("#FF4500"); // Default secondary color
-  const [tertiaryColor, setTertiaryColor] = useState("#008000"); // Default tertiary color
+  const [secondaryColor, setSecondaryColor] = useState("#FF4500");
+  const [tertiaryColor, setTertiaryColor] = useState("#008000");
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load secondary color from localStorage
     const storedSecondaryColor =
       localStorage.getItem("secondaryColor") || secondaryColor;
     setSecondaryColor(storedSecondaryColor);
@@ -106,7 +115,6 @@ const AdminLayout = () => {
       storedSecondaryColor
     );
 
-    // Load tertiary color from localStorage
     const storedTertiaryColor =
       localStorage.getItem("tertiaryColor") || tertiaryColor;
     setTertiaryColor(storedTertiaryColor);
@@ -124,12 +132,15 @@ const AdminLayout = () => {
     });
   };
 
+  const generateWhatsAppLink = (phone) => {
+    return `https://wa.me/${phone}`;
+  };
+
   return (
     <div
       className="min-h-screen"
       style={{ backgroundColor: "var(--primary-color)" }}
     >
-      {/* Mobile Header */}
       <div className="lg:hidden" style={{ backgroundColor: secondaryColor }}>
         <Button
           variant="ghost"
@@ -140,7 +151,6 @@ const AdminLayout = () => {
         </Button>
       </div>
 
-      {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-50 w-64`}
         style={{ backgroundColor: secondaryColor }}
@@ -189,7 +199,7 @@ const AdminLayout = () => {
               className="w-full justify-start text-white hover:bg-yellow-600"
               onClick={() => navigate("/admin/vehicules")}
             >
-              <Car className="mr-2 h-4 w-4" style={{ color: tertiaryColor }} />
+              <Car className="mr- 2 h-4 w-4" style={{ color: tertiaryColor }} />
               Véhicules
             </Button>
             <Button
@@ -229,7 +239,6 @@ const AdminLayout = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div
         className={`transition-all duration-200 ${
           isSidebarOpen ? "lg:ml-64" : ""
@@ -239,7 +248,7 @@ const AdminLayout = () => {
           {location.pathname === "/admin" ? (
             <div className="flex flex-col items-center justify-center min-h-screen">
               <h2
-                className="text-2xl font-bold"
+                className="text-2xl font-bold mb-20"
                 style={{ color: tertiaryColor }}
                 mb-6
               >
@@ -249,7 +258,7 @@ const AdminLayout = () => {
                 />{" "}
                 Chauffeurs en service actuellement
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {chauffeursEnRoute.map((chauffeur) => (
                   <div
                     key={chauffeur.id}
@@ -274,12 +283,29 @@ const AdminLayout = () => {
                         <Clock className="inline mr-1" /> Départ:{" "}
                         {chauffeur.startTime}
                       </p>
+                      <a
+                        href={generateWhatsAppLink(chauffeur.phone)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button
+                          variant="outline"
+                          className="mt-5 flex items-center text-sm hover:bg-green-500 hover:text-white"
+                        >
+                          <img
+                            src="/whatsapp.png"
+                            alt="WhatsApp"
+                            className="h-6 w-6"
+                          />
+                          <span>Contacter</span>
+                        </Button>
+                      </a>
                     </div>
                     <div className="absolute top-0 right-0 p-2">
                       <img
-                        src="/taxidrive.gif"
+                        src="/online.gif"
                         alt="En route"
-                        className="w-14 h-14"
+                        className="w-5 h-5"
                       />
                     </div>
                   </div>

@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
+import ForgetPassword from "./pages/ForgetPassword";
+import PasswordResetConfirmation from "./pages/PasswordResetConfirmation.tsx";
 import AdminLayout from "./components/AdminLayout";
 import NotFound from "./pages/NotFound";
 import ChauffeurList from "./pages/chauffeur/ChauffeurList";
@@ -49,6 +51,11 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/forget-password" element={<ForgetPassword />} />
+            <Route
+              path="/password-reset-confirmation"
+              element={<PasswordResetConfirmation />}
+            />
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<div>Dashboard Content</div>} />
               <Route path="chauffeurs" element={<ChauffeurList />} />
