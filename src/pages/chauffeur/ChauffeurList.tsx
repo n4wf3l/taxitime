@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import {
   Table,
   TableBody,
@@ -22,7 +24,6 @@ interface Chauffeur {
   shiftsCompleted: number;
 }
 
-// Mock data - replace with actual API calls later
 const mockChauffeurs: Chauffeur[] = [
   {
     id: "1",
@@ -32,87 +33,6 @@ const mockChauffeurs: Chauffeur[] = [
     status: "active",
     joinDate: "2024-01-15",
     shiftsCompleted: 45,
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phone: "+1 234 567 891",
-    status: "active",
-    joinDate: "2024-02-01",
-    shiftsCompleted: 32,
-  },
-  {
-    id: "3",
-    name: "Mike Johnson",
-    email: "mike.j@example.com",
-    phone: "+1 234 567 892",
-    status: "archived",
-    joinDate: "2023-11-20",
-    shiftsCompleted: 128,
-  },
-  {
-    id: "4",
-    name: "Alice Brown",
-    email: "alice.brown@example.com",
-    phone: "+1 234 567 893",
-    status: "active",
-    joinDate: "2024-03-10",
-    shiftsCompleted: 50,
-  },
-  {
-    id: "5",
-    name: "Bob White",
-    email: "bob.white@example.com",
-    phone: "+1 234 567 894",
-    status: "active",
-    joinDate: "2024-04-05",
-    shiftsCompleted: 20,
-  },
-  {
-    id: "6",
-    name: "Charlie Green",
-    email: "charlie.green@example.com",
-    phone: "+1 234 567 895",
-    status: "archived",
-    joinDate: "2023-12-15",
-    shiftsCompleted: 75,
-  },
-  {
-    id: "7",
-    name: "Diana Prince",
-    email: "diana.prince@example.com",
-    phone: "+1 234 567 896",
-    status: "active",
-    joinDate: "2024-05-01",
-    shiftsCompleted: 90,
-  },
-  {
-    id: "8",
-    name: "Ethan Hunt",
-    email: "ethan.hunt@example.com",
-    phone: "+1 234 567 897",
-    status: "active",
-    joinDate: "2024-06-12",
-    shiftsCompleted: 60,
-  },
-  {
-    id: "9",
-    name: "Fiona Apple",
-    email: "fiona.apple@example.com",
-    phone: "+1 234 567 898",
-    status: "archived",
-    joinDate: "2023-10-10",
-    shiftsCompleted: 30,
-  },
-  {
-    id: "10",
-    name: "George Clooney",
-    email: "george.clooney@example.com",
-    phone: "+1 234 567 899",
-    status: "active",
-    joinDate: "2024-07-20",
-    shiftsCompleted: 110,
   },
 ];
 
@@ -128,11 +48,21 @@ const ChauffeurList = () => {
   const navigate = useNavigate();
 
   const handleExport = () => {
-    // Implement PDF export functionality here
-    toast({
-      title: "Export Started",
-      description: "Your data is being prepared for download.",
+    const doc = new jsPDF();
+    autoTable(doc, {
+      head: [
+        ["Nom", "Email", "Téléphone", "Statut", "Date d'adhésion", "Shifts"],
+      ],
+      body: chauffeurs.map((c) => [
+        c.name,
+        c.email,
+        c.phone,
+        c.status,
+        c.joinDate,
+        c.shiftsCompleted,
+      ]),
     });
+    doc.save("chauffeurs.pdf");
   };
 
   const handleArchive = (id: string) => {
@@ -142,7 +72,6 @@ const ChauffeurList = () => {
     });
   };
 
-  // Filter chauffeurs based on search term and filters
   const filteredChauffeurs = chauffeurs.filter((chauffeur) => {
     const matchesSearch =
       chauffeur.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -153,18 +82,15 @@ const ChauffeurList = () => {
       filterStatus === "all" || chauffeur.status === filterStatus;
 
     const matchesShifts =
-      filterShifts === null || chauffeur.shiftsCompleted >= (filterShifts || 0);
+      filterShifts === null || chauffeur.shiftsCompleted >= filterShifts;
 
     return matchesSearch && matchesStatus && matchesShifts;
   });
 
-  // Sort chauffeurs based on shifts completed
   const sortedChauffeurs = filteredChauffeurs.sort((a, b) => {
-    if (sortOrder === "asc") {
-      return a.shiftsCompleted - b.shiftsCompleted;
-    } else {
-      return b.shiftsCompleted - a.shiftsCompleted;
-    }
+    return sortOrder === "asc"
+      ? a.shiftsCompleted - b.shiftsCompleted
+      : b.shiftsCompleted - a.shiftsCompleted;
   });
 
   return (
@@ -178,20 +104,17 @@ const ChauffeurList = () => {
             onClick={handleExport}
             className="bg-yellow-600 hover:bg-yellow-500"
           >
-            <Download className="mr-2 h-4 w-4" />
-            Exporter
+            <Download className="mr-2 h-4 w-4" /> Exporter
           </Button>
           <Button
             onClick={() => navigate("/admin/chauffeurs/add")}
             className="bg-yellow-600 hover:bg-yellow-500"
           >
-            <Plus className="mr-2 h-4 w-4" />
-            Ajouter un Chauffeur
+            <Plus className="mr-2 h-4 w-4" /> Ajouter un Chauffeur
           </Button>
         </div>
       </div>
 
-      {/* Search and Filter Section */}
       <div className="flex space-x-4">
         <input
           type="text"
@@ -211,6 +134,16 @@ const ChauffeurList = () => {
           <option value="active">Actif</option>
           <option value="archived">Archivé</option>
         </select>
+
+        <input
+          type="number"
+          placeholder="Filtrer par shifts"
+          className="p-2 rounded border border-gray-300 text-black"
+          value={filterShifts ?? ""}
+          onChange={(e) =>
+            setFilterShifts(e.target.value ? parseInt(e.target.value) : null)
+          }
+        />
 
         <select
           className="p-2 rounded border border-gray-300 text-black"
@@ -238,23 +171,13 @@ const ChauffeurList = () => {
           <TableBody>
             {sortedChauffeurs.map((chauffeur) => (
               <TableRow key={chauffeur.id}>
-                <TableCell className="font-medium">{chauffeur.name}</TableCell>
+                <TableCell>{chauffeur.name}</TableCell>
                 <TableCell>{chauffeur.email}</TableCell>
                 <TableCell>{chauffeur.phone}</TableCell>
-                <TableCell>
-                  <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      chauffeur.status === "active"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {chauffeur.status}
-                  </span>
-                </TableCell>
+                <TableCell>{chauffeur.status}</TableCell>
                 <TableCell>{chauffeur.joinDate}</TableCell>
                 <TableCell>{chauffeur.shiftsCompleted}</TableCell>
-                <TableCell className="text-right space-x-2">
+                <TableCell className="text-right">
                   <Button
                     variant="ghost"
                     size="icon"
