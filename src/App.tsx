@@ -13,6 +13,7 @@ import ChauffeurList from "./pages/chauffeur/ChauffeurList";
 import ProfileActivity from "./pages/chauffeur/ProfileActivity.tsx";
 import Dashboard from "./pages/chauffeur/Dashboard";
 import AddChauffeurForm from "./pages/chauffeur/AddChauffeurForm/AddChauffeurForm";
+import EditChauffeurFrom from "./pages/chauffeur/EditChauffeurForm/EditChauffeurForm.tsx";
 import FeuillesDeRoute from "./pages/chauffeur/FeuillesDeRoute";
 import Planning from "./pages/chauffeur/Planning";
 import Settings from "./pages/chauffeur/Settings";
@@ -62,6 +63,7 @@ const App = () => {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="chauffeurs" element={<ChauffeurList />} />
               <Route path="chauffeurs/add" element={<AddChauffeurForm />} />
+              <Route path="chauffeurs/edit" element={<EditChauffeurFrom />} />
               <Route path="profile-activity" element={<ProfileActivity />} />
               <Route path="vehicles" element={<div>Vehicles Management</div>} />
               <Route path="planning" element={<Planning />} />

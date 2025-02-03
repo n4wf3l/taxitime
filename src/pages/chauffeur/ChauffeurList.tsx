@@ -255,7 +255,11 @@ const ChauffeurList = () => {
                 <TableCell>{chauffeur.joinDate}</TableCell>
                 <TableCell>{chauffeur.shiftsCompleted}</TableCell>
                 <TableCell className="text-right space-x-2">
-                  <Button variant="ghost" size="icon">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => navigate("/admin/chauffeurs/edit")}
+                  >
                     <Edit className="h-4 w-4" />
                   </Button>
                   <Button

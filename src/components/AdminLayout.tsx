@@ -80,7 +80,7 @@ const AdminLayout = () => {
         style={{ backgroundColor: secondaryColor }}
       >
         <div className="h-full flex flex-col">
-          <div className="p-4 border-b flex items-center justify-between">
+          <div className="p-4 border-b flex items-center justify-center">
             <img src="/taxitimelogo.png" alt="Taxi Time" className="h-8" />
             <Button
               variant="ghost"
@@ -115,10 +115,10 @@ const AdminLayout = () => {
           <div className="p-4 border-t">
             <Button
               variant="ghost"
-              className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-800"
+              className="w-full justify-start text-red-500 hover:text-white hover:bg-red-800"
               onClick={handleLogout}
             >
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="mr-2 h-4 w-10" />
               Déconnexion
             </Button>
           </div>

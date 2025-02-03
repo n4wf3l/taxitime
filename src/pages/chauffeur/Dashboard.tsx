@@ -1,16 +1,16 @@
 import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Clock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const chauffeursEnRoute = [
   {
     id: 1,
-    name: "Ahmed B.",
+    name: "Anas B.",
     plate: "1-ABC-123",
     startTime: "08:30",
     image: "/driverimg.jpg",
-    phone: "+12345678901",
+    phone: "+32467686600",
   },
   {
     id: 2,
@@ -48,13 +48,14 @@ const chauffeursEnRoute = [
 
 const Dashboard = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const generateWhatsAppLink = (phone) => `https://wa.me/${phone}`;
 
   return (
     <div className="container mx-auto p-4">
       {location.pathname === "/admin/dashboard" ? (
-        <div className="flex flex-col items-center  min-h-screen">
+        <div className="flex flex-col items-center min-h-screen">
           <h2 className="text-2xl font-bold mb-20 text-yellow-500">
             <Clock className="inline mr-2 text-yellow-500" /> Chauffeurs en
             service actuellement
@@ -63,7 +64,8 @@ const Dashboard = () => {
             {chauffeursEnRoute.map((chauffeur) => (
               <div
                 key={chauffeur.id}
-                className="bg-gray-800 p-6 rounded-lg shadow-lg flex items-center space-x-4 border border-yellow-500 relative"
+                onClick={() => navigate("/admin/profile-activity")}
+                className="bg-gray-800 p-6 rounded-lg shadow-lg flex items-center space-x-4 border border-yellow-500 relative transform transition-transform duration-300 hover:scale-105 cursor-pointer"
               >
                 <img
                   src={chauffeur.image}
@@ -89,6 +91,7 @@ const Dashboard = () => {
                     <Button
                       variant="outline"
                       className="mt-5 flex items-center text-sm hover:bg-yellow-500 hover:text-white"
+                      onClick={(e) => e.stopPropagation()} // Prevent navigating to profile when clicking WhatsApp button
                     >
                       <img
                         src="/whatsapp.png"
